@@ -1,0 +1,13 @@
+name = "RingPolymerArrays"
+uuid = "81cd853e-d334-476c-b156-f95acc8a32dc"
+authors = ["James Gardner <james.gardner1421@gmail.com> and contributors"]
+version = "0.1.0"
+
+[compat]
+julia = "1"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]

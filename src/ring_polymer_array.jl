@@ -17,6 +17,10 @@ struct RingPolymerArray{T} <: AbstractArray{T,3}
     dims::Dims{3}
 end
 
+function RingPolymerArray{T}(A::AbstractArray; classical=Int[]) where {T}
+    return RingPolymerArray(T.(A); classical)
+end
+
 function RingPolymerArray(A::AbstractArray{T,3}; classical=Int[]) where {T}
     B = RingPolymerArray{T}(undef, size(A); classical)
     copy!(B, A)

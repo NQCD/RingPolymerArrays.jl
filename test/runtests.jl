@@ -1,6 +1,7 @@
 using RingPolymerArrays
 using Test
 using LinearAlgebra: I, SymTridiagonal, Diagonal
+using Statistics: mean
 
 nbeads = 2
 

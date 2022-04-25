@@ -88,3 +88,13 @@ end
         @test rp ≈ initial
     end
 end
+
+@testset "get_centroid" begin
+    r = rand(3, 4, 6)
+    centroid = dropdims(mean(r; dims=3); dims=3)
+    @test centroid ≈ RingPolymerArrays.get_centroid(r)
+
+    r = RingPolymerArray(rand(3, 4, 6))
+    centroid = dropdims(mean(r; dims=3); dims=3)
+    @test centroid ≈ RingPolymerArrays.get_centroid(r)
+end

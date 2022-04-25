@@ -76,6 +76,7 @@ end
 
 quantumindices(A::RingPolymerArray) = keys(A.index_map.quantum)
 classicalindices(A::RingPolymerArray) = keys(A.index_map.classical)
+quantumindices(A::AbstractArray{T,3}) where {T} = axes(A,2)
 
 eachbead(A::RingPolymerArray) = (view(A, :, :, i) for i in axes(A, 3))
 eachdof(A::RingPolymerArray) = (view(A, i, j, :) for i in axes(A, 1), j in axes(A, 2))

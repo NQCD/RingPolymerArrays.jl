@@ -18,19 +18,20 @@ struct NormalModeTransformation{T}
     end
 end
 
-function transform_to_normal_modes!(A::RingPolymerArray, transform::NormalModeTransformation)
+function transform_to_normal_modes!(A::AbstractArray{T,3}, transform::NormalModeTransformation) where {T}
     transform!(A, transpose(transform.U), transform.tmp)
 end
 
-function transform_from_normal_modes!(A::RingPolymerArray, transform::NormalModeTransformation)
+function transform_from_normal_modes!(A::AbstractArray{T,3}, transform::NormalModeTransformation) where {T}
     transform!(A, transform.U, transform.tmp)
 end
 
-function transform!(A::RingPolymerArray, U::AbstractMatrix, tmp::AbstractVector)
+function transform!(A::AbstractArray{T,3}, U::AbstractMatrix{T}, tmp::AbstractVector{T}) where {T}
     @views for i in quantumindices(A)
         for j in axes(A, 1)
             mul!(tmp, U, A[j,i,:])
             copy!(A[j,i,:], tmp)
         end
     end
+    return A
 end

@@ -16,7 +16,11 @@ ndofs, natoms = size(A)
     classical = [2, 4, 8]
     quantum = RingPolymerArrays.find_quantum_indices(10, classical)
     map = RingPolymerArrays.IndexMapping(quantum, classical)
-    @show map
+    @test map.classical[2] == 1
+    @test map.classical[4] == 2
+    @test map.classical[8] == 3
+    @test map.quantum[3] == 2
+    @test map.quantum[5] == 3
 end
 
 @testset "constructor" begin

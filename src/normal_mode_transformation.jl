@@ -1,4 +1,12 @@
 
+"""
+    NormalModeTransformation{T}
+
+Normal mode transformation for ring polymer systems.
+
+Contains the transformation matrix along with a temporary vector to perform allocation-free
+transformations.
+"""
 struct NormalModeTransformation{T}
     U::Matrix{T}
     tmp::Vector{T}
@@ -11,17 +19,31 @@ struct NormalModeTransformation{T}
         ]
 
         for col in eachcol(U)
-            normalize!(col)
+            normalize!(col) # Normalize each column
         end
 
         return new{T}(U, zeros(n))
     end
 end
 
+"""
+    transform_to_normal_modes!(A::AbstractArray{T,3}, transform::NormalModeTransformation) where {T}
+
+Transform all degrees of freedom into normal mode coordinates from the primitive coordinates.
+
+Assumes the array is not already in normal mode coordinates.
+"""
 function transform_to_normal_modes!(A::AbstractArray{T,3}, transform::NormalModeTransformation) where {T}
     transform!(A, transpose(transform.U), transform.tmp)
 end
 
+"""
+    transform_from_normal_modes!(A::AbstractArray{T,3}, transform::NormalModeTransformation) where {T}
+
+Transform all degrees of freedom from the normal mode coordinates into the primitive coordinates. 
+
+Assumes the array is already in normal mode coordinates.
+"""
 function transform_from_normal_modes!(A::AbstractArray{T,3}, transform::NormalModeTransformation) where {T}
     transform!(A, transform.U, transform.tmp)
 end

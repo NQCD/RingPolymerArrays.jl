@@ -1,4 +1,10 @@
 
+"""
+    IndexMapping
+
+Small struct containing the index mappings from the original indexing into the
+internal `RingPolymerArray` storage format.
+"""
 struct IndexMapping
     classical::OrderedDict{Int,Int}
     quantum::OrderedDict{Int,Int}
@@ -10,6 +16,15 @@ function IndexMapping(quantum::Vector{Int}, classical::Vector{Int})
     return IndexMapping(classical_map, quantum_map)
 end
 
+"""
+    RingPolymerArray{T} <: AbstractArray{T,3}
+
+Array for representing ring polymer systems.
+
+The system is partioned into `classical_atoms` and `quantum_atoms`,
+where the `classical_atoms` have only a single bead and the `quantum_atoms` have many.
+The total number of beads is equal to the size of the third dimension.
+"""
 struct RingPolymerArray{T} <: AbstractArray{T,3}
     classical_atoms::Matrix{T}
     quantum_atoms::Vector{Matrix{T}}
@@ -43,6 +58,11 @@ function RingPolymerArray{T}(::UndefInitializer, dims::Dims{3}; classical::Abstr
     return RingPolymerArray{T}(classical_atoms, quantum_atoms, index_map, dims)
 end
 
+"""
+    find_quantum_indices(natoms::Integer, classical::AbstractVector{<:Integer})
+
+Returns all indices not included in `classical`.
+"""
 function find_quantum_indices(natoms::Integer, classical::AbstractVector{<:Integer})
     quantum = collect(1:natoms)
     setdiff!(quantum, classical)
@@ -77,9 +97,29 @@ end
 quantumindices(A::RingPolymerArray) = keys(A.index_map.quantum)
 classicalindices(A::RingPolymerArray) = keys(A.index_map.classical)
 
+"""
+    eachbead(A::RingPolymerArray)
+
+Iterate views of each bead.
+Slices the array along the first two (dofs, atoms) dimensions.
+"""
 eachbead(A::RingPolymerArray) = (view(A, :, :, i) for i in axes(A, 3))
+
+"""
+    eachdof(A::RingPolymerArray)
+
+Iterate over every degree of freedom for all beads.
+Slices the array along the third (bead) dimension.
+"""
 eachdof(A::RingPolymerArray) = (view(A, i, j, :) for i in axes(A, 1), j in axes(A, 2))
 
+"""
+    get_centroid(A::AbstractArray{T,3}) where {T}
+
+Get the ring polymer centroid by averaging bead coordinates.
+
+This assumes that the array is not in normal mode coordinates.
+"""
 function get_centroid(A::AbstractArray{T,3}) where {T}
     centroid = zeros(T, size(A,1), size(A,2))
     get_centroid!(centroid, A)

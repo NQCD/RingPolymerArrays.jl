@@ -125,4 +125,6 @@ julia> transform_from_normal_modes!(fill(1.0, (2,3,4)), transform)
  0.707107  0.707107  0.707107
  0.707107  0.707107  0.707107
 ```
-When using a `RingPolymerArray`, the classical atoms will remain unchanged.
+When using a `RingPolymerArray`, the normal mode transformation is applied to both classical
+and quantum atoms, where the classical atoms will have the value of the scaled centroid.
+In normal mode coordinates, the centroid is given by the first bead coordinate divided by `sqrt(nbeads)`.

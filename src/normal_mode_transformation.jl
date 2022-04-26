@@ -27,7 +27,7 @@ function transform_from_normal_modes!(A::AbstractArray{T,3}, transform::NormalMo
 end
 
 function transform!(A::AbstractArray{T,3}, U::AbstractMatrix{T}, tmp::AbstractVector{T}) where {T}
-    @views for i in quantumindices(A)
+    @views for i in axes(A,2)
         for j in axes(A, 1)
             mul!(tmp, U, A[j,i,:])
             copy!(A[j,i,:], tmp)

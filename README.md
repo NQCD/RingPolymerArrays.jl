@@ -1,6 +1,6 @@
 # RingPolymerArrays
 
-[![CI](https://github.com/jamesgardner1421/RingPolymerArrays.jl/actions/workflows/CI.yml/badge.svg)](https://github.com/jamesgardner1421/RingPolymerArrays.jl/actions/workflows/CI.yml)
+[![CI](https://github.com/NQCD/RingPolymerArrays.jl/actions/workflows/CI.yml/badge.svg)](https://github.com/NQCD/RingPolymerArrays.jl/actions/workflows/CI.yml)
 
 RingPolymerArrays.jl provides the `RingPolymerArray{T}`, an `AbstractArray{T,3}`, useful for representing ring polymer systems using the imaginary-time path integral formalism.
 

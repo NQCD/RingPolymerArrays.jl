@@ -69,8 +69,12 @@ function find_quantum_indices(natoms::Integer, classical::AbstractVector{<:Integ
     return quantum
 end
 
-function Base.similar(A::RingPolymerArray, ::Type{T}, dims::Dims) where {T}
+function Base.similar(A::RingPolymerArray, ::Type{T}, dims::Dims{3}) where {T}
     return RingPolymerArray{T}(undef, dims; classical=collect(classicalindices(A)))
+end
+
+function Base.similar(::RingPolymerArray, ::Type{T}, dims::Dims) where {T}
+    return Array{T}(undef, dims)
 end
 
 Base.size(A::RingPolymerArray) = A.dims

@@ -102,20 +102,20 @@ quantumindices(A::RingPolymerArray) = keys(A.index_map.quantum)
 classicalindices(A::RingPolymerArray) = keys(A.index_map.classical)
 
 """
-    eachbead(A::RingPolymerArray)
+    eachbead(A::AbstractArray{T,3}) where {T}
 
 Iterate views of each bead.
 Slices the array along the first two (dofs, atoms) dimensions.
 """
-eachbead(A::RingPolymerArray) = (view(A, :, :, i) for i in axes(A, 3))
+eachbead(A::AbstractArray{T,3}) where {T} = (view(A, :, :, i) for i in axes(A, 3))
 
 """
-    eachdof(A::RingPolymerArray)
+    eachdof(A::AbstractArray{T,3}) where {T}
 
 Iterate over every degree of freedom for all beads.
 Slices the array along the third (bead) dimension.
 """
-eachdof(A::RingPolymerArray) = (view(A, i, j, :) for i in axes(A, 1), j in axes(A, 2))
+eachdof(A::AbstractArray{T,3}) where {T} = (view(A, i, j, :) for i in axes(A, 1), j in axes(A, 2))
 
 """
     get_centroid(A::AbstractArray{T,3}) where {T}

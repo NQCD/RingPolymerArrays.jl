@@ -144,3 +144,20 @@ function get_centroid!(centroid::Matrix{T}, A::AbstractArray{T,3}) where {T}
     end
     return centroid
 end
+
+struct RingPolymerStyle <: Broadcast.AbstractArrayStyle{3} end
+RingPolymerStyle(::Val{3}) = RingPolymerStyle()
+Base.BroadcastStyle(::Type{<:RingPolymerArray}) = RingPolymerStyle()
+
+function Base.similar(bc::Broadcast.Broadcasted{RingPolymerStyle}, ::Type{ElType}) where {ElType}
+    A = find_aac(bc)
+    return similar(A)
+end
+
+# https://docs.julialang.org/en/v1/manual/interfaces/#man-interfaces-broadcasting
+find_aac(bc::Base.Broadcast.Broadcasted) = find_aac(bc.args)
+find_aac(args::Tuple) = find_aac(find_aac(args[1]), Base.tail(args))
+find_aac(x) = x
+find_aac(::Tuple{}) = nothing
+find_aac(a::RingPolymerArray, rest) = a
+find_aac(::Any, rest) = find_aac(rest)

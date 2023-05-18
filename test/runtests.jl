@@ -103,3 +103,27 @@ end
     centroid = dropdims(mean(r; dims=3); dims=3)
     @test centroid ≈ RingPolymerArrays.get_centroid(r)
 end
+
+@testset "Operations" begin
+    rp = RingPolymerArray(A; nbeads)
+    B = zeros(Int, size(A)..., nbeads)
+    for i in axes(B,3)
+        copy!(view(B,:,:,i), A)
+    end
+    @test (rp + rp) isa RingPolymerArray
+    @test RingPolymerArray(B + B) == (rp + rp)
+    @test (B - B) == (rp - rp)
+    @test (B .* B) == (rp .* rp)
+    @test (B ./ B) == (rp ./ rp)
+end
+
+@testset "Operations w/ classical atoms" begin
+    A = rand(ndofs, natoms, nbeads)
+    rp = RingPolymerArray(A; classical=[1])
+    B = copy(A)
+    @test (rp + rp) isa RingPolymerArray
+    @test (B + B) ≈ (rp + rp)
+    @test (B - B) ≈ (rp - rp)
+    @test (B .* B) ≈ (rp .* rp)
+    @test (B ./ B) == (rp ./ rp)
+end
